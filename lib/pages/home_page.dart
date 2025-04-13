@@ -10,8 +10,11 @@ class CalculatorMaterialPage extends StatefulWidget {
 }
 
 class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
-  final double result = 0;
-
+  double result = 0;
+  double temporary = 0;
+  double temporary2 = 0;
+  String firstOperator = '';
+  String lastOperator = '';
   late final TextEditingController userInput;
 
   @override
@@ -116,7 +119,10 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '÷') {
                           userInput.text = '0';
                         } else {
+                          temporary2 = temporary2 + temporary;
                           userInput.text += '÷';
+                          lastOperator = '÷';
+                          temporary = 0;
                         }
                       });
                     },
@@ -135,6 +141,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '7',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 7;
                         if (userInput.text == '0') {
                           userInput.text = '7';
                         } else {
@@ -150,6 +157,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '8',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 8;
                         if (userInput.text == '0') {
                           userInput.text = '8';
                         } else {
@@ -166,6 +174,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '9',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 9;
                         if (userInput.text == '0') {
                           userInput.text = '9';
                         } else {
@@ -184,7 +193,10 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '0') {
                           userInput.text = '0';
                         } else {
+                          temporary2 = temporary2 + temporary;
                           userInput.text += '×';
+                          lastOperator = '×';
+                          temporary = 0;
                         }
                       });
                     },
@@ -203,7 +215,8 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '4',
                     number: () {
                       setState(() {
-                        if (userInput.text == '4') {
+                        temporary = temporary * 10 + 4;
+                        if (userInput.text == '0') {
                           userInput.text = '4';
                         } else {
                           userInput.text += '4';
@@ -218,6 +231,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '5',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 5;
                         if (userInput.text == '0') {
                           userInput.text = '5';
                         } else {
@@ -234,6 +248,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '6',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 6;
                         if (userInput.text == '0') {
                           userInput.text = '6';
                         } else {
@@ -252,7 +267,10 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '0') {
                           userInput.text = '-';
                         } else {
+                          temporary2 = temporary2 + temporary;
                           userInput.text += '-';
+                          lastOperator = '-';
+                          temporary = 0;
                         }
                       });
                     },
@@ -271,8 +289,8 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '1',
                     number: () {
                       setState(() {
-                        // userInput.text =
-                        //     (double.parse(userInput.text * 10) + 1).toString();
+                        temporary = temporary * 10 + 1;
+
                         if (userInput.text == '0') {
                           userInput.text = '1';
                         } else {
@@ -288,6 +306,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '2',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 2;
                         if (userInput.text == '0') {
                           userInput.text = '2';
                         } else {
@@ -304,6 +323,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                     text: '3',
                     number: () {
                       setState(() {
+                        temporary = temporary * 10 + 3;
                         if (userInput.text == '0') {
                           userInput.text = '3';
                         } else {
@@ -322,7 +342,10 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '0') {
                           userInput.text = '0';
                         } else {
+                          temporary2 = temporary2 + temporary;
                           userInput.text += '+';
+                          lastOperator = '+';
+                          temporary = 0;
                         }
                       });
                     },
@@ -344,7 +367,10 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '0') {
                           userInput.text = '0';
                         } else {
+                          temporary2 = temporary2 + temporary;
                           userInput.text += '%';
+                          lastOperator = '%';
+                          temporary = 0;
                         }
                       });
                     },
@@ -359,6 +385,7 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                         if (userInput.text == '0.0' || userInput.text == '0') {
                           userInput.text = '0';
                         } else {
+                          temporary = temporary * 10 + 0;
                           userInput.text += '0';
                         }
                       });
@@ -383,7 +410,43 @@ class _CalculatorMaterialPageState extends State<CalculatorMaterialPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CalculatorButton(text: '=', number: () {}),
+                  child: CalculatorButton(
+                    text: '=',
+                    number: () {
+                      setState(() {
+                        switch (lastOperator) {
+                          case '+':
+                            result = temporary2 + temporary;
+                            temporary2 = result;
+                            break;
+                          case '-':
+                            result = temporary2 - temporary;
+                            temporary2 = result;
+                            break;
+                          case '×':
+                            result = temporary2 * temporary;
+                            temporary2 = result;
+                            break;
+                          case '÷':
+                            if (temporary != 0) {
+                              result = temporary2 / temporary;
+                              temporary2 = result;
+                            } else {
+                              userInput.text = 'Error';
+                              return;
+                            }
+                          case '%':
+                            result = (temporary2 / temporary) * 100;
+                            temporary2 = result;
+                            break;
+                          default:
+                            break;
+                        }
+                        userInput.text = temporary2.toString();
+                        temporary = 0;
+                      });
+                    },
+                  ),
                 ),
               ],
             ),
