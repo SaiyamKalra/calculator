@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 class CalculatorButton extends StatelessWidget {
   final String text;
   final VoidCallback? number;
-  const CalculatorButton({super.key, required this.text, required this.number});
+  final Color backColor;
+  const CalculatorButton({
+    super.key,
+    required this.text,
+    required this.number,
+    required this.backColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +19,7 @@ class CalculatorButton extends StatelessWidget {
       child: TextButton(
         onPressed: number,
         style: TextButton.styleFrom(
-          backgroundColor: const Color.fromARGB(115, 64, 62, 62),
+          backgroundColor: backColor,
           shape: CircleBorder(),
         ),
         child: Text(
